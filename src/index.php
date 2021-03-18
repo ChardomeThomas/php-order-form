@@ -15,21 +15,21 @@ function whatIsHappening() {
     echo '<h2>$_SESSION</h2>';
     var_dump($_SESSION);
 }
-//echo $_POST["email"];
-echo $_POST["street"];
-echo $_POST["streetnumber"];
-echo $_POST["city"];
-echo $_POST["zipcode"];
-$_POST["email"] = ' ';
-$_POST["street"] = ' ';
-$_POST["streetnumber"] = ' ';
-$_POST["city"] = ' ';
-$_POST["zipcode"] = ' ';
+//$_POST["email"] = ' ';
+//$_POST["street"] = ' ';
+//$_POST["streetnumber"] = ' ';
+//$_POST["city"] = ' ';
+//$_POST["zipcode"] = ' ';
+echo $_POST["email"];
+echo $_GET["street"];
+echo $_GET["streetnumber"];
+echo $_GET["city"];
+echo $_GET["zipcode"];
 
 
-$emailErr = "";
-$email="";
-
+$emailErr = $streetErr = $streetNumberErr = $cityErr = $zipcodeErr = "";
+$email = $street = $street = $city = $zipcode = "";
+ //check if the user enter a valid mail
 if (empty($_POST["email"])) {
     $emailErr = "* Email is required";
 } else {
@@ -39,6 +39,48 @@ if (empty($_POST["email"])) {
         $emailErr= "* Invalid email format";
     }
 }
+// check if the user enter a valid street
+if (empty($_POST["street"])) {
+    $streetErr = "* street is required";
+} else {
+    $street= test_input($_POST["street"]);
+    // check if name only contains letters and whitespace
+    if (!preg_match("/^[a-zA-Z-' ]*$/",$street)) {
+        $streetErr = "Only letters and white space allowed";
+    }
+}
+// check if the user enter a valid street number
+if (empty($_POST["streetnumber"])) {
+    $streetNumberErr = "* street number is required";
+} else {
+    $streetNumber= test_input($_POST["streetnumber"]);
+    // check if name only contains letters and whitespace
+    if (!filter_var($streetNumber, FILTER_SANITIZE_NUMBER_INT)) {
+        $streetNumberErr = "Only letters and white space allowed";
+    }
+}
+//check if the user enter a valid city
+if (empty($_POST["city"])) {
+    $cityErr = "* city is required";
+} else {
+    $city = test_input($_POST["city"]);
+    // check if name only contains letters and whitespace
+    if (!preg_match("/^[a-zA-Z-' ]*$/",$city)) {
+        $cityErr = "Only letters and white space allowed";
+    }
+}
+//check if the user enter a valid postal code
+if (empty($_POST["zipcode"])) {
+    $zipcodeErr = "* street number is required";
+} else {
+    $zipcode= test_input($_POST["zipcode"]);
+    // check if name only contains letters and whitespace
+    if (!filter_var($zipcode, FILTER_SANITIZE_NUMBER_INT)) {
+        $zipcodeErr = "Only letters and white space allowed";
+    }
+}
+
+///////////
 function test_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
