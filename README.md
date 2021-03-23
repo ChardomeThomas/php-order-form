@@ -81,6 +81,4 @@ Sent this e-mail to the user + [a predefined](https://www.php.net/define) e-mail
 - Do not use private browsing during this excersise, it will make it more difficult to get everything working.
 - You do not set cookies the same way you set other variables. Google how to do it!
 
-## Do they have banana pizzas ? 
 
-![pizzparty](./img/pizzaparty.gif)
