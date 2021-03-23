@@ -1,3 +1,25 @@
+<?php
+
+$cookie_name = "user";
+$cookie_value = "customer";
+setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
+error_reporting(E_ERROR | E_PARSE);
+
+$products = $pizza;
+if($_GET['food'] !== null) {
+if ($_GET['food'] == false){
+$products = $drinks;
+}
+}
+
+
+
+
+
+?>
+
+
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -9,6 +31,15 @@
     <title>Order Pizzas & drinks</title>
 </head>
 <body>
+<?php
+
+//if(!isset($_COOKIE[$cookie_name])) {
+//    echo "Cookie named '" . $cookie_name . "' is not set!";
+//} else {
+//    echo "Cookie '" . $cookie_name . "' is set!<br>";
+//    echo "Value is: " . $_COOKIE[$cookie_name];
+//}
+?>
 <div class="container">
     <h1>Order pizzas in restaurant "the Personal Pizza Processors"</h1>
     <nav>
@@ -21,11 +52,12 @@
             </li>
         </ul>
     </nav>
+
     <form method="post">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="email">E-mail:</label>
-                <input type="text" id="email" name="email" class="form-control" value="<?php echo $_POST['email']; ?>"/>
+                <input type="text" id="email" name="email" class="form-control" value="<?php echo $email; ?>"/>
                 <span class="error"> <?php echo $emailErr;?>
             </div>
             <div></div>
@@ -37,24 +69,24 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="street">Street:</label>
-                    <input type="text" name="street" id="street" class="form-control" value="<?php echo $_POST['street']; ?>">
+                    <input type="text" name="street" id="street" class="form-control" value="<?php echo $street; ?>">
                     <span class="error"> <?php echo $streetErr;?>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="streetnumber">Street number:</label>
-                    <input type="text" id="streetnumber" name="streetnumber" class="form-control" value="<?php echo $_POST['streetnumber']; ?>">
+                    <input type="text" id="streetnumber" name="streetnumber" class="form-control" value="<?php echo $streetNumber; ?>">
                     <span class="error"> <?php echo $streetNumberErr;?>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="city">City:</label>
-                    <input type="text" id="city" name="city" class="form-control" value="<?php echo $_POST['city']; ?>">
+                    <input type="text" id="city" name="city" class="form-control" value="<?php echo $city; ?>">
                     <span class="error"> <?php echo $cityErr;?>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="zipcode">Zipcode</label>
-                    <input type="text" id="zipcode" name="zipcode" class="form-control" value="<?php echo $_POST['zipcode']; ?>">
+                    <input type="text" id="zipcode" name="zipcode" class="form-control" value="<?php echo $zipcode; ?>">
                     <span class="error"> <?php echo $zipcodeErr;?>
                 </div>
             </div>
@@ -73,11 +105,43 @@
             <input type="checkbox" name="express_delivery" value="5" /> 
             Express delivery (+ 5 EUR) 
         </label>
-            
+
         <button type="submit" class="btn btn-primary">Order!</button>
     </form>
+    <?php
+    if ( $check && $check1 && $check2 && $check3 && $check4 ) {
 
-    <footer>You already ordered <strong>&euro; <?php echo $totalValue ?></strong> in pizza(s) and drinks.</footer>
+
+        foreach ($_POST['products'] AS $i => $product){
+            $totalValue += $products[$i]['price'];
+        }
+        if ($totalValue != 0){
+            echo '<div class="alert alert-success" role="alert">
+         Commande envoyée !
+</div>';
+            if (isset($_POST['express_delivery'])){
+
+                $totalValue += $_POST['express_delivery'];
+                echo "livraison dans 30min";
+
+
+            }
+            else{
+                echo "livraison dans 1h";
+            }
+        }
+
+        echo '<footer>You already ordered <strong>€';  echo $totalValue; echo '</strong> in pizza(s) and drinks.</footer>';
+
+    }
+    else{
+        echo '<div class="alert alert-danger" role="alert">
+         Veuillez remplir vos informations!
+</div>';
+    }
+
+    ?>
+
 </div>
 
 <style>
@@ -88,3 +152,5 @@
 </style>
 </body>
 </html>
+
+
